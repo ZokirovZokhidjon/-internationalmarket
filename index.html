@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>International Market - Global Produce Trade</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            green: '#00c853',
+                            greenHover: '#00a843',
+                            darkBg: '#0f1115',
+                            cardBg: '#181a20',
+                            panelBg: '#21242d',
+                            border: '#2e323e',
+                            textMuted: '#9ca3af'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0f1115;
+            color: #f3f4f6;
+            font-family: 'Inter', sans-serif;
+        }
+        .hero-banner-bg {
+            background: linear-gradient(90deg, rgba(15,17,21,0.92) 0%, rgba(15,17,21,0.45) 100%), 
+                        url('https://images.unsplash.com/photo-1595855759920-86582396756a?q=80&w=1200&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 5px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #181a20;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #2e323e;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-brand-green selection:text-black">
+
+    <!-- 1. Top Secondary Navigation Bar -->
+    <header class="border-b border-brand-border bg-[#13151b] text-xs text-gray-400 py-2 px-4 sm:px-8">
+        <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
+            <div class="flex items-center space-x-6">
+                <span class="hover:text-brand-green cursor-pointer transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-phone text-brand-green"></i> +1 (800) 555-0199
+                </span>
+                <span class="hidden md:flex items-center gap-1.5 hover:text-brand-green cursor-pointer transition">
+                    <i class="fa-solid fa-envelope text-brand-green"></i> export@internationalmarket.com
+                </span>
+            </div>
+            <div class="flex items-center space-x-4 sm:space-x-6">
+                <a href="#" data-i18n="aboutUs" class="hover:text-white transition">About Us</a>
+                <a href="#" data-i18n="blog" class="hover:text-white transition">Blog</a>
+                <a href="#" data-i18n="faq" class="hover:text-white transition">FAQ</a>
+                <a href="#" class="hover:text-white transition"><i class="fa-regular fa-user mr-1 text-brand-green"></i> <span data-i18n="signIn">Sign In</span></a>
+                
+                <div class="flex items-center space-x-3 border-l border-brand-border pl-4">
+                    <!-- Dynamic Currency Selector -->
+                    <select id="currency-select" onchange="changeCurrency(this.value)" class="bg-brand-panelBg border border-brand-border text-brand-green text-xs rounded px-2 py-1 focus:outline-none cursor-pointer font-bold">
+                        <option value="USD">USD $</option>
+                        <option value="UZS">UZS so'm</option>
+                        <option value="EUR">EUR €</option>
+                        <option value="RUB">RUB ₽</option>
+                    </select>
+
+                    <!-- Dynamic Language Selector -->
+                    <select id="language-select" onchange="changeLanguage(this.value)" class="bg-brand-panelBg border border-brand-border text-gray-200 text-xs rounded px-2 py-1 focus:outline-none cursor-pointer hover:text-white font-medium">
+                        <option value="en">English (EN)</option>
+                        <option value="uz">O'zbek (UZ)</option>
+                        <option value="ru">Русский (RU)</option>
+                        <option value="tr">Türkçe (TR)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 2. Main Header Bar -->
+    <section class="bg-brand-cardBg border-b border-brand-border py-4 px-4 sm:px-8 sticky top-0 z-50 shadow-2xl">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
+            
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center gap-3">
+                <img src="logos.jpg" onerror="this.onerror=null; this.src='https://placehold.co/100x100/00c853/000000?text=IM';" alt="International Market Logo" class="w-11 h-11 rounded-lg object-cover border border-brand-green">
+                <div>
+                    <span class="text-xl sm:text-2xl font-black tracking-wider text-white uppercase block leading-none">
+                        INTERNATIONAL <span class="text-brand-green">MARKET</span>
+                    </span>
+                    <span data-i18n="brandTagline" class="text-[9px] text-brand-textMuted tracking-widest uppercase block mt-1">GLOBAL FRESH PRODUCE COMMERCE</span>
+                </div>
+            </a>
+
+            <!-- Search Bar (Center) -->
+            <div class="flex-1 max-w-2xl mx-2 min-w-[280px]">
+                <form onsubmit="event.preventDefault();" class="flex items-center bg-brand-darkBg rounded-md border border-brand-border overflow-hidden focus-within:border-brand-green transition">
+                    <input type="text" id="search-input" data-i18n-ph="searchPlaceholder" placeholder="Search tomatoes, cucumbers, fresh produce..." class="w-full bg-transparent px-4 py-2.5 text-sm text-white focus:outline-none placeholder-gray-500">
+                    <select id="search-cat-select" class="hidden sm:block bg-brand-panelBg text-gray-300 text-xs px-3 py-2.5 border-l border-brand-border focus:outline-none cursor-pointer">
+                        <option data-i18n="catAll">All Categories</option>
+                        <option data-i18n="catTomatoes">Fresh Tomatoes</option>
+                        <option data-i18n="catCucumbers">Cucumbers</option>
+                        <option data-i18n="catMelons">Watermelons & Melons</option>
+                        <option data-i18n="catPeppers">Peppers & Chili</option>
+                    </select>
+                    <button type="button" class="bg-brand-green hover:bg-brand-greenHover text-black font-extrabold px-6 py-2.5 transition">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Action Buttons (Right) -->
+            <div class="flex items-center space-x-5 text-gray-300">
+                <a href="#" class="flex flex-col items-center hover:text-brand-green transition relative">
+                    <i class="fa-solid fa-arrows-rotate text-lg"></i>
+                    <span data-i18n="compare" class="text-[10px] mt-1 hidden sm:block">Compare</span>
+                    <span class="absolute -top-1.5 -right-2 bg-brand-green text-black text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">0</span>
+                </a>
+                <a href="#" class="flex flex-col items-center hover:text-brand-green transition relative">
+                    <i class="fa-regular fa-heart text-lg"></i>
+                    <span data-i18n="wishlist" class="text-[10px] mt-1 hidden sm:block">Wishlist</span>
+                    <span class="absolute -top-1.5 -right-2 bg-brand-green text-black text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">4</span>
+                </a>
+                <button onclick="toggleCartModal()" class="flex items-center gap-3 bg-brand-darkBg border border-brand-border p-2 px-3 rounded-md hover:border-brand-green transition">
+                    <div class="relative">
+                        <i class="fa-solid fa-basket-shopping text-brand-green text-xl"></i>
+                        <span id="cart-count" class="absolute -top-2 -right-2 bg-brand-green text-black text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">0</span>
+                    </div>
+                    <div class="text-left hidden lg:block">
+                        <span data-i18n="myCart" class="block text-[9px] text-gray-400 leading-none">MY CART</span>
+                        <span id="cart-total" class="text-xs font-bold text-white">$0.00</span>
+                    </div>
+                </button>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 3. Main Content Section -->
+    <main class="max-w-7xl mx-auto w-full px-4 sm:px-8 py-6 flex-1">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            
+            <!-- Sidebar Navigation (Left Categories) -->
+            <div class="bg-brand-cardBg border border-brand-border rounded-lg overflow-hidden self-start">
+                <div class="bg-brand-green text-black p-3.5 font-extrabold flex items-center justify-between text-sm uppercase tracking-wider">
+                    <span data-i18n="categoriesTitle"><i class="fa-solid fa-bars mr-2"></i> Categories</span>
+                    <i class="fa-solid fa-chevron-down text-xs"></i>
+                </div>
+                <ul class="divide-y divide-brand-border text-sm text-gray-300">
+                    <li><a href="#" class="flex items-center justify-between p-3 hover:bg-brand-panelBg hover:text-brand-green transition"><span class="flex items-center gap-3"><i class="fa-solid fa-apple-whole text-brand-green w-4"></i> <span data-i18n="catTomatoes">Fresh Tomatoes</span></span><i class="fa-solid fa-chevron-right text-[10px] text-gray-600"></i></a></li>
+                    <li><a href="#" class="flex items-center justify-between p-3 hover:bg-brand-panelBg hover:text-brand-green transition"><span class="flex items-center gap-3"><i class="fa-solid fa-vial-circle-check text-brand-green w-4"></i> <span data-i18n="catCucumbers">Cucumbers & Zucchini</span></span><i class="fa-solid fa-chevron-right text-[10px] text-gray-600"></i></a></li>
+                    <li><a href="#" class="flex items-center justify-between p-3 hover:bg-brand-panelBg hover:text-brand-green transition"><span class="flex items-center gap-3"><i class="fa-solid fa-box text-brand-green w-4"></i> <span data-i18n="catMelons">Watermelons & Melons</span></span><i class="fa-solid fa-chevron-right text-[10px] text-gray-600"></i></a></li>
+                    <li><a href="#" class="flex items-center justify-between p-3 hover:bg-brand-panelBg hover:text-brand-green transition"><span class="flex items-center gap-3"><i class="fa-solid fa-pepper-hot text-brand-green w-4"></i> <span data-i18n="catPeppers">Bell Peppers & Chili</span></span><i class="fa-solid fa-chevron-right text-[10px] text-gray-600"></i></a></li>
+                    <li><a href="#" class="flex items-center justify-between p-3 hover:bg-brand-panelBg hover:text-brand-green transition"><span class="flex items-center gap-3"><i class="fa-solid fa-carrot text-brand-green w-4"></i> <span data-i18n="catOnions">Carrots & Onions</span></span><i class="fa-solid fa-chevron-right text-[10px] text-gray-600"></i></a></li>
+                    <li><a href="#" class="flex items-center justify-between p-3 hover:bg-brand-panelBg hover:text-brand-green transition"><span class="flex items-center gap-3"><i class="fa-solid fa-leaf text-brand-green w-4"></i> <span data-i18n="catHerbs">Organic Greens & Herbs</span></span><i class="fa-solid fa-chevron-right text-[10px] text-gray-600"></i></a></li>
+                    <li><a href="#" class="flex items-center justify-between p-3 hover:bg-brand-panelBg hover:text-brand-green transition"><span class="flex items-center gap-3"><i class="fa-solid fa-truck-ramp-box text-brand-green w-4"></i> <span data-i18n="catBulk">Wholesale Bulk Export</span></span><i class="fa-solid fa-chevron-right text-[10px] text-gray-600"></i></a></li>
+                </ul>
+            </div>
+
+            <!-- Main Hero Banner -->
+            <div class="lg:col-span-3 flex flex-col justify-between">
+                <div class="hero-banner-bg rounded-lg p-8 sm:p-12 min-h-[360px] flex flex-col justify-center border border-brand-border relative overflow-hidden shadow-2xl">
+                    <span data-i18n="bannerTag" class="inline-block bg-brand-green/20 text-brand-green border border-brand-green/40 text-xs font-bold px-3 py-1 rounded-full w-fit mb-3 uppercase tracking-widest">
+                        INTERNATIONAL HARVEST EXPORTS
+                    </span>
+                    <h1 class="text-3xl sm:text-5xl font-black text-white leading-tight mb-4 max-w-lg">
+                        <span data-i18n="bannerTitle">Premium Organic Produce</span> <br><span data-i18n="bannerTitleHighlight" class="text-brand-green">Rich With Flavor</span>
+                    </h1>
+                    <p data-i18n="bannerDesc" class="text-gray-300 text-sm sm:text-base mb-8 max-w-md">
+                        Direct global trade of fresh tomatoes, cucumbers, and melons certified for international distribution.
+                    </p>
+                    <div class="flex items-center gap-4">
+                        <a href="#products" class="inline-flex items-center gap-2 bg-brand-green hover:bg-brand-greenHover text-black font-extrabold px-8 py-3.5 rounded transition shadow-lg shadow-emerald-950/50 uppercase tracking-wider text-sm">
+                            <span data-i18n="exploreBtn">EXPLORE NOW</span> <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+
+                    <!-- Carousel Dots Indicators -->
+                    <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+                        <span class="w-8 h-2 bg-brand-green rounded-full cursor-pointer"></span>
+                        <span class="w-2 h-2 bg-gray-600 hover:bg-gray-400 rounded-full cursor-pointer"></span>
+                        <span class="w-2 h-2 bg-gray-600 hover:bg-gray-400 rounded-full cursor-pointer"></span>
+                    </div>
+                </div>
+
+                <!-- Feature Highlights -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
+                    <div class="bg-brand-cardBg border border-brand-border p-4 rounded-lg flex items-center gap-3">
+                        <i class="fa-solid fa-truck-fast text-2xl text-brand-green"></i>
+                        <div>
+                            <h4 data-i18n="feat1Title" class="text-xs font-bold text-white uppercase">Temperature Controlled</h4>
+                            <p data-i18n="feat1Sub" class="text-[11px] text-gray-400">Freshness guaranteed in transit</p>
+                        </div>
+                    </div>
+                    <div class="bg-brand-cardBg border border-brand-border p-4 rounded-lg flex items-center gap-3">
+                        <i class="fa-solid fa-certificate text-2xl text-brand-green"></i>
+                        <div>
+                            <h4 data-i18n="feat2Title" class="text-xs font-bold text-white uppercase">Global Quality Standards</h4>
+                            <p data-i18n="feat2Sub" class="text-[11px] text-gray-400">100% Eco-certified produce</p>
+                        </div>
+                    </div>
+                    <div class="bg-brand-cardBg border border-brand-border p-4 rounded-lg flex items-center gap-3">
+                        <i class="fa-solid fa-handshake text-2xl text-brand-green"></i>
+                        <div>
+                            <h4 data-i18n="feat3Title" class="text-xs font-bold text-white uppercase">Direct Farm Contracts</h4>
+                            <p data-i18n="feat3Sub" class="text-[11px] text-gray-400">Competitive B2B wholesale pricing</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 4. Top Categories & Deal of the Day Section -->
+        <div id="products" class="mt-12 grid grid-cols-1 lg:grid-cols-4 gap-6">
+            
+            <!-- Promo Box -->
+            <div class="bg-brand-cardBg border border-brand-border rounded-lg p-5 flex flex-col justify-between relative overflow-hidden group">
+                <div class="z-10">
+                    <span data-i18n="promoTag" class="text-xs font-bold text-brand-green uppercase tracking-widest">PROMO OFFER</span>
+                    <h3 data-i18n="promoTitle" class="text-2xl font-black text-white mt-2">Sweet Melons & Watermelons</h3>
+                    <p data-i18n="promoSub" class="text-xs text-gray-400 mt-2">Sunday Morning Must Have Exports</p>
+                </div>
+                <div class="my-6 text-center z-10">
+                    <img src="https://images.unsplash.com/photo-1589984662646-e7b2e4962f18?q=80&w=400&auto=format&fit=crop" alt="Melon" class="w-40 h-40 object-cover rounded-full mx-auto border-2 border-brand-green shadow-xl group-hover:scale-105 transition duration-300">
+                </div>
+                <a href="#" data-i18n="viewMore" class="inline-block text-center bg-brand-panelBg border border-brand-border hover:border-brand-green text-brand-green text-xs font-bold py-2.5 rounded transition uppercase tracking-wider z-10">
+                    VIEW MORE
+                </a>
+            </div>
+
+            <!-- Product Grid Section -->
+            <div class="lg:col-span-2">
+                <div class="flex items-center justify-between border-b border-brand-border pb-3 mb-6">
+                    <h3 class="text-base font-extrabold text-white uppercase tracking-wider flex items-center gap-2">
+                        <span class="w-2 h-4 bg-brand-green rounded-full inline-block"></span>
+                        <span data-i18n="topCategoriesHeader">TOP CATEGORIES & EXPORTS</span>
+                    </h3>
+                </div>
+
+                <!-- Product Grid Dynamic Container -->
+                <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- Products rendered dynamically by JS -->
+                </div>
+            </div>
+
+            <!-- Right Widget: Deal of the Day -->
+            <div class="bg-brand-cardBg border border-brand-border rounded-lg p-4 flex flex-col justify-between">
+                <div class="flex items-center justify-between border-b border-brand-border pb-3 mb-3">
+                    <h3 data-i18n="dealOfDay" class="text-xs font-bold text-white uppercase tracking-wider">DEAL OF THE DAY</h3>
+                    <span data-i18n="savePercent" class="bg-red-600 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded">SAVE 20%</span>
+                </div>
+
+                <div class="text-center my-2">
+                    <img src="https://images.unsplash.com/photo-1587049352847-81a56d773cae?q=80&w=400&auto=format&fit=crop" alt="Watermelon" class="w-36 h-36 object-cover rounded-lg mx-auto border border-brand-border">
+                    <h4 id="deal-title" class="text-sm font-bold text-white mt-3">Export Grade Striped Watermelon</h4>
+                    <p class="text-xs text-brand-green font-black mt-1">
+                        <span id="deal-price">$400.00</span> 
+                        <span id="deal-old-price" class="text-gray-500 line-through text-[11px] font-normal">$500.00</span>
+                    </p>
+                </div>
+
+                <!-- Countdown Timer -->
+                <div class="bg-brand-darkBg border border-brand-border rounded p-2 my-2 text-center">
+                    <span data-i18n="hurryText" class="text-[10px] text-gray-400 uppercase block mb-1">Hurry Up! Offer Ends In:</span>
+                    <div class="flex justify-center gap-2 text-center font-bold text-xs text-white">
+                        <div class="bg-brand-panelBg p-1.5 rounded min-w-[36px]"><span id="timer-hrs">14</span><span data-i18n="unitHrs" class="block text-[8px] text-gray-500 font-normal">HRS</span></div> :
+                        <div class="bg-brand-panelBg p-1.5 rounded min-w-[36px]"><span id="timer-min">35</span><span data-i18n="unitMin" class="block text-[8px] text-gray-500 font-normal">MIN</span></div> :
+                        <div class="bg-brand-panelBg p-1.5 rounded min-w-[36px]"><span id="timer-sec">12</span><span data-i18n="unitSec" class="block text-[8px] text-gray-500 font-normal">SEC</span></div>
+                    </div>
+                </div>
+
+                <button onclick="addDealToCart()" data-i18n="addToCartBtn" class="w-full bg-brand-green hover:bg-brand-greenHover text-black text-xs font-black py-2.5 rounded transition uppercase tracking-wider">
+                    ADD TO CART
+                </button>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="bg-brand-cardBg border-t border-brand-border mt-16 pt-10 pb-6 px-4 sm:px-8 text-xs text-gray-400">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+            <div>
+                <div class="flex items-center gap-2 mb-3">
+                    <img src="logos.jpg" onerror="this.onerror=null; this.src='https://placehold.co/100x100/00c853/000000?text=IM';" alt="Logo" class="w-8 h-8 rounded border border-brand-green">
+                    <span class="text-base font-extrabold text-white">INTERNATIONAL MARKET</span>
+                </div>
+                <p data-i18n="footerAbout" class="text-gray-400 leading-relaxed mb-4">Leading B2B international commerce platform connecting eco-farms with global importers of fresh agricultural produce.</p>
+            </div>
+            <div>
+                <h4 data-i18n="footerCatHeader" class="text-sm font-bold text-white uppercase mb-3">Popular Categories</h4>
+                <ul class="space-y-2">
+                    <li><a href="#" data-i18n="catTomatoes" class="hover:text-brand-green transition">Pink & Red Tomatoes</a></li>
+                    <li><a href="#" data-i18n="catCucumbers" class="hover:text-brand-green transition">Greenhouse Cucumbers</a></li>
+                    <li><a href="#" data-i18n="catMelons" class="hover:text-brand-green transition">Sweet Watermelons & Melons</a></li>
+                    <li><a href="#" data-i18n="catPeppers" class="hover:text-brand-green transition">Fresh Bell Peppers</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 data-i18n="footerLinksHeader" class="text-sm font-bold text-white uppercase mb-3">Quick Links</h4>
+                <ul class="space-y-2">
+                    <li><a href="#" data-i18n="linkCert" class="hover:text-brand-green transition">Export Quality Certificates</a></li>
+                    <li><a href="#" data-i18n="linkShipping" class="hover:text-brand-green transition">Logistics & Shipping Options</a></li>
+                    <li><a href="#" data-i18n="linkBulk" class="hover:text-brand-green transition">Bulk Order Inquiries</a></li>
+                    <li><a href="#" data-i18n="linkPrivacy" class="hover:text-brand-green transition">Privacy Policy & Terms</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 data-i18n="footerContactHeader" class="text-sm font-bold text-white uppercase mb-3">Global Trade Contact</h4>
+                <p class="mb-2"><i class="fa-solid fa-location-dot text-brand-green mr-2"></i> Agro Export Zone, Commerce Street</p>
+                <p class="mb-2"><i class="fa-solid fa-phone text-brand-green mr-2"></i> +1 (800) 555-0199</p>
+                <p><i class="fa-solid fa-envelope text-brand-green mr-2"></i> trade@internationalmarket.com</p>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto border-t border-brand-border pt-6 flex flex-wrap justify-between items-center gap-4 text-[11px]">
+            <p>&copy; 2026 INTERNATIONAL MARKET. All Rights Reserved.</p>
+            <div class="flex space-x-4 text-base text-gray-500">
+                <i class="fa-brands fa-cc-visa hover:text-white cursor-pointer"></i>
+                <i class="fa-brands fa-cc-mastercard hover:text-white cursor-pointer"></i>
+                <i class="fa-brands fa-cc-paypal hover:text-white cursor-pointer"></i>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive Cart Slide-over Modal -->
+    <div id="cart-modal" class="fixed inset-0 bg-black/80 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-brand-cardBg border border-brand-border rounded-xl max-w-lg w-full p-6 shadow-2xl relative flex flex-col max-h-[85vh]">
+            <div class="flex items-center justify-between border-b border-brand-border pb-4 mb-4">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-basket-shopping text-brand-green"></i> 
+                    <span data-i18n="cartModalTitle">Shopping Cart Draft</span>
+                </h3>
+                <button onclick="toggleCartModal()" class="text-gray-400 hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div id="cart-items-list" class="flex-1 overflow-y-auto custom-scrollbar space-y-3 pr-1 my-2">
+                <!-- Cart items dynamically rendered -->
+            </div>
+
+            <div class="border-t border-brand-border pt-4 mt-2">
+                <div class="flex justify-between items-center mb-4 text-sm font-bold">
+                    <span data-i18n="cartTotalLabel" class="text-gray-400">Total Estimated Price:</span>
+                    <span id="cart-modal-total" class="text-lg text-brand-green font-extrabold">$0.00</span>
+                </div>
+                <div class="flex gap-3">
+                    <button onclick="toggleCartModal()" data-i18n="continueBtn" class="flex-1 bg-brand-panelBg border border-brand-border text-gray-300 py-2.5 rounded-lg text-xs font-bold hover:text-white transition">CONTINUE SHOPPING</button>
+                    <button onclick="checkoutAlert()" data-i18n="checkoutBtn" class="flex-1 bg-brand-green hover:bg-brand-greenHover text-black py-2.5 rounded-lg text-xs font-extrabold transition uppercase">PROCEED TO CHECKOUT</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast-notify" class="fixed bottom-5 right-5 bg-brand-green text-black font-extrabold px-5 py-3 rounded-lg shadow-2xl z-50 transform translate-y-20 opacity-0 transition-all duration-300 flex items-center gap-3">
+        <i class="fa-solid fa-circle-check text-xl"></i>
+        <span id="toast-message">Item added to cart!</span>
+    </div>
+
+    <!-- Multi-language & Real-time Currency Logic -->
+    <script>
+        // Currency Conversion Rates (Base USD)
+        const exchangeRates = {
+            USD: { symbol: '$', rate: 1.0, suffix: false },
+            UZS: { symbol: 'so\'m', rate: 12850.0, suffix: true },
+            EUR: { symbol: '€', rate: 0.92, suffix: false },
+            RUB: { symbol: '₽', rate: 96.5, suffix: true }
+        };
+
+        let currentCurrency = 'USD';
+        let currentLang = 'en';
+
+        // Translation Dictionary
+        const i18n = {
+            en: {
+                aboutUs: "About Us",
+                blog: "Blog",
+                faq: "FAQ",
+                signIn: "Sign In",
+                brandTagline: "GLOBAL FRESH PRODUCE COMMERCE",
+                searchPlaceholder: "Search tomatoes, cucumbers, fresh produce...",
+                catAll: "All Categories",
+                compare: "Compare",
+                wishlist: "Wishlist",
+                myCart: "MY CART",
+                categoriesTitle: "Categories",
+                catTomatoes: "Fresh Tomatoes",
+                catCucumbers: "Cucumbers & Zucchini",
+                catMelons: "Watermelons & Melons",
+                catPeppers: "Bell Peppers & Chili",
+                catOnions: "Carrots & Onions",
+                catHerbs: "Organic Greens & Herbs",
+                catBulk: "Wholesale Bulk Export",
+                bannerTag: "INTERNATIONAL HARVEST EXPORTS",
+                bannerTitle: "Premium Organic Produce",
+                bannerTitleHighlight: "Rich With Flavor",
+                bannerDesc: "Direct global trade of fresh tomatoes, cucumbers, and melons certified for international distribution.",
+                exploreBtn: "EXPLORE NOW",
+                feat1Title: "Temperature Controlled",
+                feat1Sub: "Freshness guaranteed in transit",
+                feat2Title: "Global Quality Standards",
+                feat2Sub: "100% Eco-certified produce",
+                feat3Title: "Direct Farm Contracts",
+                feat3Sub: "Competitive B2B wholesale pricing",
+                promoTag: "PROMO OFFER",
+                promoTitle: "Sweet Melons & Watermelons",
+                promoSub: "Sunday Morning Must Have Exports",
+                viewMore: "VIEW MORE",
+                topCategoriesHeader: "TOP CATEGORIES & EXPORTS",
+                dealOfDay: "DEAL OF THE DAY",
+                savePercent: "SAVE 20%",
+                hurryText: "Hurry Up! Offer Ends In:",
+                unitHrs: "HRS",
+                unitMin: "MIN",
+                unitSec: "SEC",
+                addToCartBtn: "ADD TO CART",
+                footerAbout: "Leading B2B international commerce platform connecting eco-farms with global importers of fresh agricultural produce.",
+                footerCatHeader: "Popular Categories",
+                footerLinksHeader: "Quick Links",
+                footerContactHeader: "Global Trade Contact",
+                linkCert: "Export Quality Certificates",
+                linkShipping: "Logistics & Shipping Options",
+                linkBulk: "Bulk Order Inquiries",
+                linkPrivacy: "Privacy Policy & Terms",
+                cartModalTitle: "Shopping Cart Draft",
+                cartTotalLabel: "Total Estimated Price:",
+                continueBtn: "CONTINUE SHOPPING",
+                checkoutBtn: "PROCEED TO CHECKOUT",
+                emptyCart: "Your shopping cart is currently empty.",
+                addedToast: "added to cart!"
+            },
+            uz: {
+                aboutUs: "Биз ҳақимизда",
+                blog: "Блог",
+                faq: "Савол-жавоб",
+                signIn: "Кириш",
+                brandTagline: "ХАЛҚАРО МЕВА-САБЗАВОТ ТАРМОҒИ",
+                searchPlaceholder: "Помидор, бодиринг ва бошқаларни қидиринг...",
+                catAll: "Барча тоифалар",
+                compare: "Солиштириш",
+                wishlist: "Танланганлар",
+                myCart: "САВАТЧАМ",
+                categoriesTitle: "Категориялар",
+                catTomatoes: "Янги Помидорлар",
+                catCucumbers: "Бодиринг ва Цукини",
+                catMelons: "Тарвуз ва Қовунлар",
+                catPeppers: "Ширин ва Аччиқ Қалампир",
+                catOnions: "Сабзи ва Пиёзлар",
+                catHerbs: "Яшил Кўкатлар",
+                catBulk: "Улгуржи Экспорт",
+                bannerTag: "ХАЛҚАРО ҲОСИЛ ЭКСПОРАТИ",
+                bannerTitle: "Сархил ва Экологик Полиз",
+                bannerTitleHighlight: "Ширин ва Мазали",
+                bannerDesc: "Сертификатланган янги помидор, бодиринг ва полиз маҳсулотларининг халқаро тўғридан-тўғри савдоси.",
+                exploreBtn: "ХАРИД ҚИЛИШ",
+                feat1Title: "Музлаткичли Транспорт",
+                feat1Sub: "Йўлда тароват сақланади",
+                feat2Title: "Жаҳон Стандартлари",
+                feat2Sub: "100% Эко-сертификатланган",
+                feat3Title: "Фермерлик Шартномалари",
+                feat3Sub: "Улгуржи B2B ҳамёнбоп нархлар",
+                promoTag: "АКЦИЯЛИ ТАКЛИФ",
+                promoTitle: "Ширин Қовун ва Тарвузлар",
+                promoSub: "Экспорт учун энг яхши танлов",
+                viewMore: "БАРЧАСИНИ КЎРИШ",
+                topCategoriesHeader: "ОММАБОП МАҲСУЛОТЛАР ВА ЭКСПОРТ",
+                dealOfDay: "КУН ТАКЛИФИ",
+                savePercent: "20% ЧЕГИРМА",
+                hurryText: "Шошилинг! Шошилинч таклиф вақти:",
+                unitHrs: "СОАТ",
+                unitMin: "ДАҚ",
+                unitSec: "СОН",
+                addToCartBtn: "САВАТГА ОЛИШ",
+                footerAbout: "Эко-фермаларни халқаро импортчилар билан боғловчи етакчи B2B қишлоқ хўжалиги платформаси.",
+                footerCatHeader: "Оммабоп Тоифалар",
+                footerLinksHeader: "Тезкор Ҳаволалар",
+                footerContactHeader: "Халқаро Алоқа",
+                linkCert: "Экспорт Сертификатлари",
+                linkShipping: "Логистика ва Жўнатиш",
+                linkBulk: "Улгуржи Буюртмалар",
+                linkPrivacy: "Махфийлик Сиёсати",
+                cartModalTitle: "Харид Саватчаси",
+                cartTotalLabel: "Умумий Ҳисобланган Сумма:",
+                continueBtn: "ДАВОМ ЭТИШ",
+                checkoutBtn: "БУЮРТМАНИ РАСМИЙЛАШТИРИШ",
+                emptyCart: "Саватчада ҳозирча маҳсулот йўқ.",
+                addedToast: "саватга қўшилди!"
+            },
+            ru: {
+                aboutUs: "О нас",
+                blog: "Блог",
+                faq: "FAQ",
+                signIn: "Войти",
+                brandTagline: "МЕЖДУНАРОДНАЯ ТОРГОВЛЯ ОВОЩАМИ И ФРУКТАМИ",
+                searchPlaceholder: "Поиск томатов, огурцов, свежей продукции...",
+                catAll: "Все категории",
+                compare: "Сравнение",
+                wishlist: "Избранное",
+                myCart: "КОРЗИНА",
+                categoriesTitle: "Категории",
+                catTomatoes: "Свежие Томаты",
+                catCucumbers: "Огурцы и Цукини",
+                catMelons: "Арбузы и Дыни",
+                catPeppers: "Перец и Чили",
+                catOnions: "Морковь и Лук",
+                catHerbs: "Свежая Зелень",
+                catBulk: "Оптовый Экспорт",
+                bannerTag: "МЕЖДУНАРОДНЫЙ ЭКСПОРТ УРОЖАЯ",
+                bannerTitle: "Свежая Эко Продукция",
+                bannerTitleHighlight: "Богатый Вкус",
+                bannerDesc: "Прямые международные поставки свежих томатов, огурцов и бахчевых культур.",
+                exploreBtn: "КАТАЛОГ",
+                feat1Title: "Температурный Контроль",
+                feat1Sub: "Гарантия свежести при перевозке",
+                feat2Title: "Мировые Стандарты",
+                feat2Sub: "100% Эко-сертифицировано",
+                feat3Title: "Прямые Контракты",
+                feat3Sub: "Выгодные B2B оптовые цены",
+                promoTag: "ПРОМО ПРЕДЛОЖЕНИЕ",
+                promoTitle: "Сладкие Дыни и Арбузы",
+                promoSub: "Лучший экспортный выбор",
+                viewMore: "ПОДРОБНЕЕ",
+                topCategoriesHeader: "ТОП КАТЕГОРИИ И ЭКСПОРТ",
+                dealOfDay: "ТОВАР ДНЯ",
+                savePercent: "СКИДКА 20%",
+                hurryText: "Успейте! Акция закончится через:",
+                unitHrs: "ЧАС",
+                unitMin: "МИН",
+                unitSec: "СЕК",
+                addToCartBtn: "В КОРЗИНУ",
+                footerAbout: "Ведущая B2B платформа, соединяющая эко-фермы с международными импортерами.",
+                footerCatHeader: "Популярные Категории",
+                footerLinksHeader: "Быстрые Ссылки",
+                footerContactHeader: "Контакты",
+                linkCert: "Сертификаты Качества",
+                linkShipping: "Варианты Доставки",
+                linkBulk: "Оптовые Запросы",
+                linkPrivacy: "Политика Конфиденциальности",
+                cartModalTitle: "Корзина Покупок",
+                cartTotalLabel: "Итоговая Стоимость:",
+                continueBtn: "ПРОДОЛЖИТЬ ПОКУПКИ",
+                checkoutBtn: "ОФОРМИТЬ ЗАКАЗ",
+                emptyCart: "Ваша корзина пуста.",
+                addedToast: "добавлено в корзину!"
+            },
+            tr: {
+                aboutUs: "Hakkımızda",
+                blog: "Blog",
+                faq: "SSS",
+                signIn: "Giriş Yap",
+                brandTagline: "ULUSLARARASI TAZE ÜRÜN TİCARETİ",
+                searchPlaceholder: "Domates, salatalık, taze ürün arayın...",
+                catAll: "Tüm Kategoriler",
+                compare: "Karşılaştır",
+                wishlist: "Favoriler",
+                myCart: "SEPETİM",
+                categoriesTitle: "Kategoriler",
+                catTomatoes: "Taze Domates",
+                catCucumbers: "Salatalık ve Kabak",
+                catMelons: "Karpuz ve Kavun",
+                catPeppers: "Biber ve Biberiye",
+                catOnions: "Havuç ve Soğan",
+                catHerbs: "Taze Yeşillikler",
+                catBulk: "Toptan İhracat",
+                bannerTag: "ULUSLARARASI HASAT İHRACATI",
+                bannerTitle: "Taze Organik Ürünler",
+                bannerTitleHighlight: "Lezzet Dolu",
+                bannerDesc: "Sertifikalı taze domates, salatalık ve kavunların doğrudan uluslararası ticareti.",
+                exploreBtn: "ŞİMDİ İNCELE",
+                feat1Title: "Sıcaklık Kontrollü",
+                feat1Sub: "Taşımada tazelik garantisi",
+                feat2Title: "Küresel Kalite",
+                feat2Sub: "%100 Eko-sertifikalı",
+                feat3Title: "Doğrudan Sözleşme",
+                feat3Sub: "Rekabetçi B2B toptan fiyatlar",
+                promoTag: "PROMOSYON",
+                promoTitle: "Tatlı Kavun ve Karpuz",
+                promoSub: "İhracat İçin En İyi Seçim",
+                viewMore: "DAHA FAZLA",
+                topCategoriesHeader: "EN İYİ KATEGORİLER VE İHRACAT",
+                dealOfDay: "GÜNÜN FIRSATI",
+                savePercent: "%20 İNDİRİM",
+                hurryText: "Acele Edin! Fırsat Bitiş Süresi:",
+                unitHrs: "SAAT",
+                unitMin: "DK",
+                unitSec: "SN",
+                addToCartBtn: "SEPETE EKLE",
+                footerAbout: "Eko-çiftlikleri taze tarım ürünlerinin küresel ithalatçılarıyla buluşturan B2B platformu.",
+                footerCatHeader: "Popüler Kategoriler",
+                footerLinksHeader: "Hızlı Bağlantılar",
+                footerContactHeader: "İletişim",
+                linkCert: "İhracat Kalite Sertifikaları",
+                linkShipping: "Lojistik ve Sevkiyat",
+                linkBulk: "Toptan Sipariş Talepleri",
+                linkPrivacy: "Gizlilik Politikası",
+                cartModalTitle: "Alışveriş Sepeti",
+                cartTotalLabel: "Toplam Tahmini Tutar:",
+                continueBtn: "ALIŞVERİŞE DEVAM ET",
+                checkoutBtn: "SİPARİŞİ TAMAMLA",
+                emptyCart: "Sepetiniz şu anda boş.",
+                addedToast: "sepete eklendi!"
+            }
+        };
+
+        // Products Master Database (Prices in USD base)
+        const productsList = [
+            {
+                id: 1,
+                nameKey: {
+                    en: "Fresh Pink Tomatoes (Bulk)",
+                    uz: "Сархил Пушти Помидор (Улгуржи)",
+                    ru: "Розовые Томаты (Оптом)",
+                    tr: "Taze Pembe Domates (Toptan)"
+                },
+                categoryKey: "catTomatoes",
+                priceUSD: 650,
+                unit: "/ Ton",
+                image: "https://images.unsplash.com/photo-1592924357228-91a4daadcfea?q=80&w=400&auto=format&fit=crop",
+                tag: "HOT",
+                tagColor: "bg-red-600 text-white",
+                rating: 4.8
+            },
+            {
+                id: 2,
+                nameKey: {
+                    en: "Crispy Greenhouse Cucumbers",
+                    uz: "Иссиқхона Бодиринглари",
+                    ru: "Тепличные Огурцы",
+                    tr: "Sera Salatalığı"
+                },
+                categoryKey: "catCucumbers",
+                priceUSD: 520,
+                unit: "/ Ton",
+                image: "https://images.unsplash.com/photo-1449300079323-02e209d9d3a6?q=80&w=400&auto=format&fit=crop",
+                tag: "ECO",
+                tagColor: "bg-brand-green text-black",
+                rating: 5.0
+            },
+            {
+                id: 3,
+                nameKey: {
+                    en: "Sweet Honey Melons",
+                    uz: "Ширин Ширинқовун",
+                    ru: "Сладкая Медовая Дыня",
+                    tr: "Tatlı Bal Kavunu"
+                },
+                categoryKey: "catMelons",
+                priceUSD: 480,
+                unit: "/ Ton",
+                image: "https://images.unsplash.com/photo-1589984662646-e7b2e4962f18?q=80&w=400&auto=format&fit=crop",
+                tag: "SWEET",
+                tagColor: "bg-amber-500 text-black",
+                rating: 4.7
+            },
+            {
+                id: 4,
+                nameKey: {
+                    en: "Red & Yellow Bell Peppers",
+                    uz: "Қизил ва Сариқ Булғор",
+                    ru: "Болгарский Перец",
+                    tr: "Kırmızı & Sarı Biber"
+                },
+                categoryKey: "catPeppers",
+                priceUSD: 710,
+                unit: "/ Ton",
+                image: "https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?q=80&w=400&auto=format&fit=crop",
+                tag: "FRESH",
+                tagColor: "bg-emerald-600 text-white",
+                rating: 4.9
+            }
+        ];
+
+        // Deal of the day item
+        const dealItem = {
+            id: 99,
+            nameKey: {
+                en: "Export Grade Striped Watermelon",
+                uz: "Экспортбоп Ола Тарвуз",
+                ru: "Экспортный Полосатый Арбуз",
+                tr: "İhracat Kalite Çizgili Karpuz"
+            },
+            priceUSD: 400,
+            oldPriceUSD: 500
+        };
+
+        // Shopping Cart State
+        let cartItems = [
+            { id: 1, qty: 1 }
+        ];
+
+        // Format Currency Helper
+        function formatPrice(amountInUSD) {
+            const curr = exchangeRates[currentCurrency];
+            const converted = amountInUSD * curr.rate;
+            
+            let formattedStr = '';
+            if (currentCurrency === 'UZS') {
+                formattedStr = Math.round(converted).toLocaleString('uz-UZ');
+            } else if (currentCurrency === 'RUB') {
+                formattedStr = Math.round(converted).toLocaleString('ru-RU');
+            } else {
+                formattedStr = converted.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            }
+
+            return curr.suffix ? `${formattedStr} ${curr.symbol}` : `${curr.symbol}${formattedStr}`;
+        }
+
+        // Change Currency Action
+        function changeCurrency(newCurrency) {
+            currentCurrency = newCurrency;
+            renderProducts();
+            renderDealOfDay();
+            updateCartUI();
+        }
+
+        // Change Language Action
+        function changeLanguage(newLang) {
+            currentLang = newLang;
+            
+            // Translate static DOM elements
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (i18n[currentLang] && i18n[currentLang][key]) {
+                    el.innerText = i18n[currentLang][key];
+                }
+            });
+
+            // Translate placeholders
+            document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+                const key = el.getAttribute('data-i18n-ph');
+                if (i18n[currentLang] && i18n[currentLang][key]) {
+                    el.setAttribute('placeholder', i18n[currentLang][key]);
+                }
+            });
+
+            renderProducts();
+            renderDealOfDay();
+            updateCartUI();
+        }
+
+        // Render Product Cards
+        function renderProducts() {
+            const container = document.getElementById('product-grid');
+            container.innerHTML = '';
+
+            productsList.forEach(product => {
+                const title = product.nameKey[currentLang] || product.nameKey.en;
+                const category = i18n[currentLang][product.categoryKey] || 'Produce';
+                const formattedPrice = formatPrice(product.priceUSD);
+                const btnText = i18n[currentLang].addToCartBtn;
+
+                const cardHTML = `
+                    <div class="bg-brand-cardBg border border-brand-border rounded-lg p-3 hover:border-brand-green transition flex flex-col justify-between group">
+                        <div class="relative">
+                            <span class="absolute top-1 left-1 ${product.tagColor} text-[9px] font-bold px-1.5 py-0.5 rounded uppercase">${product.tag}</span>
+                            <img src="${product.image}" alt="${title}" class="w-full h-32 object-cover rounded mb-3 group-hover:scale-105 transition duration-300">
+                        </div>
+                        <div>
+                            <span class="text-[10px] text-gray-500 uppercase">${category}</span>
+                            <h4 class="text-sm font-bold text-white line-clamp-1">${title}</h4>
+                            <div class="text-xs text-yellow-400 my-1">
+                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+                                <span class="text-[10px] text-gray-400 ml-1">(${product.rating})</span>
+                            </div>
+                            <div class="flex items-center justify-between mt-2">
+                                <div>
+                                    <span class="text-sm font-black text-brand-green">${formattedPrice}</span>
+                                    <span class="text-[10px] text-gray-500 block">${product.unit}</span>
+                                </div>
+                                <button onclick="addToCart(${product.id})" class="bg-brand-panelBg border border-brand-border hover:bg-brand-green hover:text-black hover:border-brand-green text-gray-200 p-2.5 rounded transition">
+                                    <i class="fa-solid fa-cart-plus text-xs"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += cardHTML;
+            });
+        }
+
+        // Render Deal of the day section
+        function renderDealOfDay() {
+            document.getElementById('deal-title').innerText = dealItem.nameKey[currentLang] || dealItem.nameKey.en;
+            document.getElementById('deal-price').innerText = formatPrice(dealItem.priceUSD);
+            document.getElementById('deal-old-price').innerText = formatPrice(dealItem.oldPriceUSD);
+        }
+
+        // Cart Actions
+        function addToCart(productId) {
+            const existing = cartItems.find(item => item.id === productId);
+            if (existing) {
+                existing.qty++;
+            } else {
+                cartItems.push({ id: productId, qty: 1 });
+            }
+            updateCartUI();
+            
+            const prod = productsList.find(p => p.id === productId) || dealItem;
+            const name = prod.nameKey ? (prod.nameKey[currentLang] || prod.nameKey.en) : 'Product';
+            showToast(`${name} ${i18n[currentLang].addedToast}`);
+        }
+
+        function addDealToCart() {
+            addToCart(99);
+        }
+
+        function changeQty(productId, delta) {
+            const idx = cartItems.findIndex(item => item.id === productId);
+            if (idx !== -1) {
+                cartItems[idx].qty += delta;
+                if (cartItems[idx].qty <= 0) {
+                    cartItems.splice(idx, 1);
+                }
+            }
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            let totalUSD = 0;
+            let totalCount = 0;
+
+            const cartListContainer = document.getElementById('cart-items-list');
+            cartListContainer.innerHTML = '';
+
+            if (cartItems.length === 0) {
+                cartListContainer.innerHTML = `<p class="text-center text-xs text-gray-500 py-6">${i18n[currentLang].emptyCart}</p>`;
+            } else {
+                cartItems.forEach(item => {
+                    let prod = productsList.find(p => p.id === item.id);
+                    if (!prod && item.id === 99) prod = dealItem;
+                    if (!prod) return;
+
+                    const title = prod.nameKey ? (prod.nameKey[currentLang] || prod.nameKey.en) : 'Product';
+                    const itemTotalUSD = prod.priceUSD * item.qty;
+                    totalUSD += itemTotalUSD;
+                    totalCount += item.qty;
+
+                    const itemHTML = `
+                        <div class="bg-brand-panelBg border border-brand-border p-3 rounded-lg flex items-center justify-between gap-3">
+                            <div class="flex-1 min-w-0">
+                                <h5 class="text-xs font-bold text-white truncate">${title}</h5>
+                                <span class="text-[11px] text-brand-green font-bold">${formatPrice(prod.priceUSD)} / ton</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button onclick="changeQty(${item.id}, -1)" class="w-6 h-6 rounded bg-brand-cardBg border border-brand-border text-white flex items-center justify-center text-xs hover:border-brand-green">-</button>
+                                <span class="text-xs font-bold text-white px-1">${item.qty}</span>
+                                <button onclick="changeQty(${item.id}, 1)" class="w-6 h-6 rounded bg-brand-cardBg border border-brand-border text-white flex items-center justify-center text-xs hover:border-brand-green">+</button>
+                            </div>
+                            <span class="text-xs font-extrabold text-white min-w-[70px] text-right">${formatPrice(itemTotalUSD)}</span>
+                        </div>
+                    `;
+                    cartListContainer.innerHTML += itemHTML;
+                });
+            }
+
+            document.getElementById('cart-count').innerText = totalCount;
+            const formattedTotal = formatPrice(totalUSD);
+            document.getElementById('cart-total').innerText = formattedTotal;
+            document.getElementById('cart-modal-total').innerText = formattedTotal;
+        }
+
+        function toggleCartModal() {
+            const modal = document.getElementById('cart-modal');
+            modal.classList.toggle('hidden');
+        }
+
+        function checkoutAlert() {
+            showToast("Order Draft Saved! International export inquiry initialized.");
+            setTimeout(() => { toggleCartModal(); }, 1200);
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast-notify');
+            document.getElementById('toast-message').innerText = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        // Deal of the day countdown timer logic
+        function startCountdown() {
+            let hrs = 14, min = 35, sec = 12;
+            setInterval(() => {
+                if (sec > 0) { sec--; } 
+                else {
+                    sec = 59;
+                    if (min > 0) { min--; }
+                    else { min = 59; if (hrs > 0) hrs--; }
+                }
+                document.getElementById('timer-hrs').innerText = String(hrs).padStart(2, '0');
+                document.getElementById('timer-min').innerText = String(min).padStart(2, '0');
+                document.getElementById('timer-sec').innerText = String(sec).padStart(2, '0');
+            }, 1000);
+        }
+
+        // Initialize App on Load
+        window.onload = function() {
+            changeLanguage('en');
+            changeCurrency('USD');
+            startCountdown();
+        };
+    </script>
+</body>
+</html>
